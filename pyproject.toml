@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "soundsight"
+version = "0.1.0"
+description = "Reproducible ESC-50 environmental sound classification baseline"
+requires-python = ">=3.11,<3.14"
+dependencies = ["numpy==2.2.6", "scipy==1.15.3", "scikit-learn==1.6.1", "librosa==0.11.0", "soundfile==0.13.1", "joblib==1.5.1", "streamlit==1.45.1", "matplotlib==3.10.3"]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.5"]
+
+[project.scripts]
+soundsight = "soundsight.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
