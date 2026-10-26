@@ -6,7 +6,7 @@ Hear a sound. See its likely source and the frequency patterns behind the predic
 [![Tests](https://github.com/ran-nope/SoundSight/actions/workflows/tests.yml/badge.svg)](https://github.com/ran-nope/SoundSight/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/Python-3.12-3776ab)
 
-[**Try the live demo →**](https://soundsight-ran-nope.streamlit.app/) Choose a dog, rain or clock sample, or upload MP3, WAV, FLAC, OGG or AIFF. Free hosting may need a minute to wake up.
+[**Try the live demo →**](https://soundsight-ran-nope.streamlit.app/) Record through your microphone, choose a dog, rain or clock sample, or upload MP3, WAV, FLAC, OGG or AIFF. Free hosting may need a minute to wake up.
 
 ![SoundSight analyzing a held-out rain example](docs/demo.png)
 
@@ -50,7 +50,7 @@ Audio is downmixed to mono, resampled to 22,050 Hz and padded or cropped to five
 
 ## Limits and credits
 
-Only the first five seconds are analyzed; uploads are limited to 30 seconds and 10 MB. Unknown sounds, music and overlapping events may be misclassified. This is an educational prototype, not a safety alerting system. Uploads are processed in memory; processed audio is temporarily cached for up to ten minutes, with at most twelve entries. The app does not write uploads to disk. Only load trusted joblib models.
+Only the first five seconds are analyzed; uploads are limited to 30 seconds and 10 MB. Unknown sounds, music and overlapping events may be misclassified. This is an educational prototype, not a safety alerting system. Uploads are processed in memory; microphone recordings are sent to the app after you stop recording. No shared audio cache is used. The app does not write uploads or recordings to disk. Microphone access requires HTTPS or localhost and your browser permission; Upload remains available if recording is blocked. The pinned Streamlit recorder produces 16 kHz WAV audio, resampled by the shared pipeline; this may lose high-frequency detail compared with file uploads. Only load trusted joblib models.
 
 ESC-50 is compiled by Karol J. Piczak and licensed CC BY-NC 3.0; the three included ESC-10 samples have separate attribution under CC BY 3.0. [Sample creators and source links](samples/ATTRIBUTION.md) · [Upstream dataset and license](https://github.com/karolpiczak/ESC-50). Citation: Piczak, *ESC: Dataset for Environmental Sound Classification*, ACM Multimedia 2015.
 
