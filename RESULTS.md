@@ -21,6 +21,6 @@ The fold-5 confusion matrix shows clear weaknesses: helicopter sounds are often 
 
 ![Fold 5 confusion matrix](artifacts/confusion_matrix.png)
 
-Validation: **11 tests passed**, covering MP3/FLAC/OGG/AIFF decoding, audio preprocessing, invalid input, official-fold splitting, source isolation, fitted-scaler isolation, model serialization/inference and Streamlit startup with the trained model. A held-out pig recording was also decoded and predicted successfully with the saved ESC-50 model. The software tests do not contribute to the reported accuracy.
+Validation: **14 tests passed**, covering sample analysis and chart rendering, MP3/FLAC/OGG/AIFF decoding, audio preprocessing, invalid input, official-fold splitting, source isolation, fitted-scaler isolation, model serialization/inference and Streamlit startup with the trained model. A held-out pig recording was also decoded and predicted successfully with the saved ESC-50 model. The software tests do not contribute to the reported accuracy.
 
 To reproduce, follow the README with the pinned dataset revision and resolved environment. Future improvements should reserve an inner validation split for selecting features or model settings; repeated tuning against these reported outer folds would weaken the evaluation.
