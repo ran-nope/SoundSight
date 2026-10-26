@@ -2,6 +2,8 @@
 
 An environmental sound classification portfolio project: upload a short recording and explore the model's top five sound labels.
 
+[Try the live demo](https://soundsight-ran-nope.streamlit.app/) · [Free deployment instructions](DEPLOYMENT.md)
+
 **Measured first baseline:** 57.55% mean held-out accuracy and 0.5626 mean macro F1 across five source-isolated folds. See [the evaluation report](RESULTS.md) for the exact protocol, fold results and limitations. Eleven software tests pass, including decoding real MP3, FLAC, OGG and AIFF files. These results describe ESC-50 evaluation, not accuracy on arbitrary uploads.
 
 ## MVP
@@ -44,7 +46,7 @@ The demo artifact deliberately retains the model trained without fold 5 by defau
 
 Read `artifacts/metrics.json` for measured results from the actual run. If it does not exist, **no ESC-50 accuracy has been measured**. Synthetic tones in the unit tests validate software plumbing only and never count as environmental-sound performance.
 
-The report records preprocessing, model parameters, package versions, Python version, metadata hash, an ordered audio-content hash, fold sizes, and per-fold metrics. Acquisition records its archive URL and SHA-256 in `data/ESC-50/provenance.json`. `requirements-lock.txt`, when present, records the fully resolved environment used locally. Reproduce with the same Python version and `pip install -r requirements-lock.txt`, then `pip install -e . --no-deps`.
+The report records preprocessing, model parameters, package versions, Python version, metadata hash, an ordered audio-content hash, fold sizes, and per-fold metrics. Acquisition records its archive URL and SHA-256 in `data/ESC-50/provenance.json`. `requirements-lock.txt` pins the app environment, retaining the numerical package versions used for training. PyArrow is pinned to 24.0.0 for Community Cloud compatibility; the initial local run used 26.0.0, which the host replaces due to a known crash. Reproduce with the same Python version and `pip install -r requirements-lock.txt`, then `pip install -e . --no-deps`.
 
 `mean_accuracy` is the arithmetic mean across evaluated folds; for a single-fold run it is only that fold's result. `std_accuracy` uses population standard deviation across folds, not a confidence interval. Do not compare a single-fold score directly with a paper's five-fold score. Future model selection should use nested validation within the training folds; leave the outer test fold untouched.
 

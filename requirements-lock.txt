@@ -37,7 +37,7 @@ platformdirs==4.13.5
 pluggy==1.7.0
 pooch==1.9.0
 protobuf==6.33.6
-pyarrow==26.0.0
+pyarrow==24.0.0
 pycparser==3.12
 pydeck==0.9.3
 pyparsing==3.3.3
