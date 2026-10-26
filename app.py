@@ -9,27 +9,28 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 from soundsight.audio import AudioConfig, load_audio
-from soundsight.model import load_bundle, predict
+from soundsight.model import load_bundle, predict_audio
 
 ROOT = Path(__file__).parent
 st.set_page_config(page_title="SoundSight — Sound analysis", page_icon="◉", layout="wide")
 st.markdown("""<style>
-.stApp { background: #f5f3ed; color: #202b29; }
-.block-container { max-width: 1180px; padding-top: 2.6rem; }
+.block-container { max-width: 1180px; padding-top: 1.6rem; }
 h1 { font-family: Georgia, serif !important; font-weight: 500 !important; letter-spacing: -.055em; font-size: 3.7rem !important; }
 h2, h3 { letter-spacing: -.025em; }
-[data-testid="stCaptionContainer"] { color: #596460; }
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color: inherit !important; opacity: 1 !important; }
+[data-testid="stCaption"], [data-testid="stCaption"] p { color: inherit !important; opacity: 1 !important; }
 [data-testid="stExpander"] { border-radius: 4px; border-color: #d7d5cd; }
 [data-testid="stButton"] button { border-radius: 4px; border-color: #cbc9c0; }
 [data-testid="stFileUploaderDropzone"] { border: 1px dashed #aaa99f; border-radius: 4px; }
-.eyebrow { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: #66716a; }
+.eyebrow { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; }
 .rule { border-top: 1px solid #cbc9c0; margin: 1.1rem 0 1.5rem; }
 @media (max-width: 640px) { .block-container { padding-top: 1.5rem; } h1 { font-size: 3rem !important; } }
 </style>""", unsafe_allow_html=True)
 st.markdown('<div class="eyebrow">Environmental sound study / 01</div>', unsafe_allow_html=True)
 st.title("SoundSight")
+st.markdown("[Open demo](https://soundsight-ran-nope.streamlit.app/) · [View on GitHub](https://github.com/ran-nope/SoundSight)")
 st.write("Put a sound under the microscope.")
-st.caption("Record your surroundings, bring a file, or explore a field recording. One sound, five seconds, 50 possible labels.")
+st.caption("57.55% mean accuracy across five held-out folds · 50 sound classes · shared-source training clips excluded.")
 st.markdown('<div class="rule"></div>', unsafe_allow_html=True)
 model_path = ROOT / "artifacts/model.joblib"
 if not model_path.exists():
@@ -52,14 +53,13 @@ def prepare_audio(raw, settings):
 
 bundle = get_model(model_path.stat().st_mtime_ns)
 st.subheader("01 / Choose your sound")
-source = st.radio("Audio source", ["Record", "Upload", "Examples"], horizontal=True, label_visibility="collapsed")
+source = st.segmented_control("Audio source", ["Examples", "Record", "Upload"], default="Examples", key="source", label_visibility="collapsed")
 raw = None
 if source == "Record":
-    st.write("Capture a short sound nearby.")
-    st.caption("Tap the microphone, allow access in your browser, record about 5 seconds, then stop. Analysis begins after you stop; this is not continuous monitoring.")
-    st.caption("The recording is sent to this app when you stop. It is not saved to disk or a shared audio cache.")
-    recorded = st.audio_input("Record a sound", key="microphone")
-    st.caption("No microphone access? Check this site's browser permissions or use Upload. Recording works on HTTPS and localhost.")
+    st.caption("Record about five seconds, then stop. Audio is sent for analysis, without being saved to disk or a shared cache.")
+    recorded = st.audio_input("Record a sound", key="microphone", label_visibility="collapsed")
+    with st.expander("Microphone help"):
+        st.write("Allow microphone access in your browser. Recording requires HTTPS or localhost. If permission is blocked, use Upload. Analysis starts after you stop, not continuously.")
     if recorded is not None:
         if recorded.size > 10 * 1024 * 1024:
             st.error("Please keep recordings under 10 MB and 30 seconds.")
@@ -67,14 +67,14 @@ if source == "Record":
             raw = recorded.getvalue()
 elif source == "Examples":
     samples = json.loads((ROOT / "samples/manifest.json").read_text(encoding="utf-8"))
-    for column, sample in zip(st.columns(len(samples)), samples):
-        if column.button(sample["name"].split(" ", 1)[-1], use_container_width=True):
-            st.session_state["sample_name"] = sample["name"]
-    selected = next((s for s in samples if s["name"] == st.session_state.get("sample_name")), None)
+    sample_names = [s["name"].split(" ", 1)[-1] for s in samples]
+    sample_choice = st.segmented_control("Example clip", sample_names, default="Rain", key="example", label_visibility="collapsed")
+    selected = next((s for s in samples if s["name"].split(" ", 1)[-1] == sample_choice), None)
     if selected:
         raw = (ROOT / "samples" / selected["file"]).read_bytes()
         st.caption(f"Dataset label: {selected['category'].replace('_', ' ')} · ESC-50 fold 5 (held out from the demo model).")
-        st.caption(f"Source: [{selected['title']}]({selected['source_url']}) by {selected['creator']} · {selected['original_license']}. ESC-10 excerpt compiled by Karol J. Piczak, CC BY 3.0.")
+        with st.expander("Sample source and credit"):
+            st.caption(f"Source: [{selected['title']}]({selected['source_url']}) by {selected['creator']} · {selected['original_license']}. ESC-10 excerpt compiled by Karol J. Piczak, CC BY 3.0.")
     else:
         st.caption("Choose a sample above to see a prediction. These are dataset examples, not an independent real-world benchmark.")
 elif source == "Upload":
@@ -90,13 +90,13 @@ if raw is not None:
     try:
         with st.spinner("Analyzing the recording…"):
             y, logmel = prepare_audio(raw, bundle["audio_config"])
-            results = predict(BytesIO(raw), bundle)
+            results = predict_audio(y, bundle)
         st.audio(y, sample_rate=bundle["audio_config"]["sample_rate"])
         st.caption("Preview of the five-second segment used for prediction.")
         left, right = st.columns([1, 1.3])
         with left:
             st.caption("02 / CLOSEST MATCH")
-            st.subheader("Closest match: " + results[0]["sound"].replace("_", " ").title())
+            st.subheader(results[0]["sound"].replace("_", " ").title())
             fig, ax = plt.subplots(figsize=(6, 3.2), facecolor="#f5f3ed")
             ax.set_facecolor("#f5f3ed")
             names = [r["sound"].replace("_", " ") for r in results]

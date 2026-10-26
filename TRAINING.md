@@ -4,7 +4,7 @@ An environmental sound classification portfolio project: upload a short recordin
 
 [Try the live demo](https://soundsight-ran-nope.streamlit.app/) · [Free deployment instructions](DEPLOYMENT.md)
 
-**Measured first baseline:** 57.55% mean held-out accuracy and 0.5626 mean macro F1 across five source-isolated folds. See [the evaluation report](RESULTS.md) for the exact protocol, fold results and limitations. Fifteen software tests pass, including decoding real MP3, FLAC, OGG and AIFF files. These results describe ESC-50 evaluation, not accuracy on arbitrary uploads.
+**Measured first baseline:** 57.55% mean held-out accuracy and 0.5626 mean macro F1 across five source-isolated folds. See [the evaluation report](RESULTS.md) for the exact protocol, fold results and limitations. Sixteen software tests pass, including decoding real MP3, FLAC, OGG and AIFF files. These results describe ESC-50 evaluation, not accuracy on arbitrary uploads.
 
 ## MVP
 

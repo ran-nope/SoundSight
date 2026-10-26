@@ -1,4 +1,6 @@
-# SoundSight 🎧 · ESC-50 Sound Classifier
+# SoundSight · ESC-50 Sound Classifier
+
+[Open the live demo](https://soundsight-ran-nope.streamlit.app/)
 
 Hear a sound. See its likely source and the frequency patterns behind the prediction.
 
@@ -20,7 +22,7 @@ python -m pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The fitted model and three attributed samples are included; no dataset download or retraining is required to try the app. Run `python -m pytest -q` for software checks.
+The app opens with a rain example already analyzed. Recording and uploading are one click away. The fitted model and three attributed samples are included; no dataset download or retraining is required to try the app. Run `python -m pytest -q` for software checks.
 
 ## Measured baseline
 
@@ -48,6 +50,10 @@ This stricter source-isolation protocol differs slightly from standard ESC-50 be
 
 Audio is downmixed to mono, resampled to 22,050 Hz and padded or cropped to five seconds. Log-mel energies, MFCCs, deltas and spectral statistics become a 218-value vector. A training-only scaler and RBF SVM predict among 50 environmental sound classes. The demo shows playback, a waveform, a mel spectrogram and the five highest ranking scores. These scores are **not probabilities**.
 
+## Tests
+
+Run `python -m pytest -q`. The suite covers decoding, source isolation, prediction, sample interactions, microphone inference and single-pass audio decoding.
+
 ## Limits and credits
 
 Only the first five seconds are analyzed; uploads are limited to 30 seconds and 10 MB. Unknown sounds, music and overlapping events may be misclassified. This is an educational prototype, not a safety alerting system. Uploads are processed in memory; microphone recordings are sent to the app after you stop recording. No shared audio cache is used. The app does not write uploads or recordings to disk. Microphone access requires HTTPS or localhost and your browser permission; Upload remains available if recording is blocked. The pinned Streamlit recorder produces 16 kHz WAV audio, resampled by the shared pipeline; this may lose high-frequency detail compared with file uploads. Only load trusted joblib models.
@@ -55,3 +61,5 @@ Only the first five seconds are analyzed; uploads are limited to 30 seconds and 
 ESC-50 is compiled by Karol J. Piczak and licensed CC BY-NC 3.0; the three included ESC-10 samples have separate attribution under CC BY 3.0. [Sample creators and source links](samples/ATTRIBUTION.md) · [Upstream dataset and license](https://github.com/karolpiczak/ESC-50). Citation: Piczak, *ESC: Dataset for Environmental Sound Classification*, ACM Multimedia 2015.
 
 [Training and reproducibility](TRAINING.md) · [Free deployment](DEPLOYMENT.md) · [Source code](src/soundsight)
+
+Original code is available under the [MIT license](LICENSE). Dataset audio and the derived model retain their separate terms.
