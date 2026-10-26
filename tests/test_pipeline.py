@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 import soundfile as sf
 from soundsight.audio import AudioConfig, extract, load_audio
-from soundsight.model import make_model, split_fold, predict, load_bundle
+from soundsight.model import make_model, split_fold, predict, predict_audio, load_bundle
 
 
 def wav(freq=440, sr=44100, seconds=1, stereo=False):
@@ -78,6 +78,7 @@ def test_real_fit_serialization_and_prediction(tmp_path):
     joblib.dump(bundle, path)
     result = predict(wav(440), load_bundle(path), top_k=3)
     assert result[0]["sound"] == "mid"
+    assert predict_audio(load_audio(wav(440)), load_bundle(path), top_k=3) == result
     assert all(np.isfinite(r["score"]) for r in result)
     mp3 = BytesIO()
     samples, sr = sf.read(wav(440))
