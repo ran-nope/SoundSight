@@ -19,8 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-Scope: This license applies to SoundSight's original source code and
-documentation. It does not relicense ESC-50/ESC-10 audio, third-party
-dependencies, or the dataset-derived model artifact. See samples/ATTRIBUTION.md
-and the upstream ESC-50 license for audio and dataset terms.
