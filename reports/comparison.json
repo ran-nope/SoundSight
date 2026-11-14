@@ -1,0 +1,125 @@
+{
+  "feature_sha256": "82b74654102bcf71de5795e1acea447c6e71bf9d25c88d0aed94a755514e8040",
+  "results": [
+    {
+      "model": "Dummy",
+      "fold": 1,
+      "train_n": 1600,
+      "test_n": 400,
+      "accuracy": 0.02,
+      "macro_f1": 0.000784313725490196
+    },
+    {
+      "model": "Linear SVM",
+      "fold": 1,
+      "train_n": 1600,
+      "test_n": 400,
+      "accuracy": 0.4675,
+      "macro_f1": 0.4603715398135912
+    },
+    {
+      "model": "RBF SVM",
+      "fold": 1,
+      "train_n": 1600,
+      "test_n": 400,
+      "accuracy": 0.5675,
+      "macro_f1": 0.5588560844040721
+    },
+    {
+      "model": "Dummy",
+      "fold": 2,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.02,
+      "macro_f1": 0.000784313725490196
+    },
+    {
+      "model": "Linear SVM",
+      "fold": 2,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.4575,
+      "macro_f1": 0.44012738173419286
+    },
+    {
+      "model": "RBF SVM",
+      "fold": 2,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.585,
+      "macro_f1": 0.5671238651956919
+    },
+    {
+      "model": "Dummy",
+      "fold": 3,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.02,
+      "macro_f1": 0.000784313725490196
+    },
+    {
+      "model": "Linear SVM",
+      "fold": 3,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.4425,
+      "macro_f1": 0.43612616657508296
+    },
+    {
+      "model": "RBF SVM",
+      "fold": 3,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.54,
+      "macro_f1": 0.5280509909766876
+    },
+    {
+      "model": "Dummy",
+      "fold": 4,
+      "train_n": 1597,
+      "test_n": 400,
+      "accuracy": 0.02,
+      "macro_f1": 0.000784313725490196
+    },
+    {
+      "model": "Linear SVM",
+      "fold": 4,
+      "train_n": 1597,
+      "test_n": 400,
+      "accuracy": 0.5125,
+      "macro_f1": 0.499869888281653
+    },
+    {
+      "model": "RBF SVM",
+      "fold": 4,
+      "train_n": 1597,
+      "test_n": 400,
+      "accuracy": 0.6125,
+      "macro_f1": 0.6013693079478515
+    },
+    {
+      "model": "Dummy",
+      "fold": 5,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.02,
+      "macro_f1": 0.000784313725490196
+    },
+    {
+      "model": "Linear SVM",
+      "fold": 5,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.43,
+      "macro_f1": 0.41223054372677465
+    },
+    {
+      "model": "RBF SVM",
+      "fold": 5,
+      "train_n": 1598,
+      "test_n": 400,
+      "accuracy": 0.5725,
+      "macro_f1": 0.557622538730171
+    }
+  ]
+}

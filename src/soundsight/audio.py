@@ -18,12 +18,19 @@ class AudioConfig:
 def load_audio(source, config=AudioConfig()):
     """Decode bounded audio (including MP3); mix, resample, pad/crop to 5 s."""
     with sf.SoundFile(source) as audio:
-        if audio.frames == 0 or audio.samplerate <= 0:
+        if audio.frames <= 0 or audio.samplerate <= 0:
             raise ValueError("Audio is empty.")
+        if not 8000 <= audio.samplerate <= 192000:
+            raise ValueError("Sample rate must be between 8 and 192 kHz.")
+        if not 1 <= audio.channels <= 8:
+            raise ValueError("Audio must contain between 1 and 8 channels.")
         if audio.frames / audio.samplerate > 30:
             raise ValueError("Please use a clip of 30 seconds or less.")
         sr = audio.samplerate
-        y = audio.read(dtype="float32", always_2d=True).mean(axis=1)
+        frames = min(audio.frames, int(config.seconds * sr))
+        y = audio.read(frames=frames, dtype="float32", always_2d=True).mean(axis=1)
+        if not len(y):
+            raise ValueError("Audio could not be decoded.")
     if not np.isfinite(y).all():
         raise ValueError("Audio contains invalid samples.")
     y = librosa.resample(y, orig_sr=sr, target_sr=config.sample_rate)
