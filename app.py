@@ -10,6 +10,7 @@ import numpy as np
 import streamlit as st
 from soundsight.audio import AudioConfig, load_audio
 from soundsight.model import load_bundle, predict_audio
+from soundsight.uncertainty import assess_ranking
 
 ROOT = Path(__file__).parent
 st.set_page_config(page_title="SoundSight — Sound analysis", page_icon="◉", layout="wide")
@@ -96,7 +97,11 @@ if raw is not None:
         left, right = st.columns([1, 1.3])
         with left:
             st.caption("02 / CLOSEST MATCH")
-            st.subheader(results[0]["sound"].replace("_", " ").title())
+            assessment = assess_ranking(results)
+            st.subheader(assessment['label'].replace('_', ' ').title())
+            if assessment['uncertain']:
+                st.warning('Uncertain / Unknown: the leading classes have similar ranking scores.')
+            st.caption('Margin warning is heuristic, not calibrated confidence or validated unknown detection. Unknown sounds can still receive a strong match.')
             fig, ax = plt.subplots(figsize=(6, 3.2), facecolor="#f5f3ed")
             ax.set_facecolor("#f5f3ed")
             names = [r["sound"].replace("_", " ") for r in results]

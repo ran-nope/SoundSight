@@ -63,3 +63,13 @@ ESC-50 is compiled by Karol J. Piczak and licensed CC BY-NC 3.0; the three inclu
 [Training and reproducibility](TRAINING.md) · [Free deployment](DEPLOYMENT.md) · [Source code](src/soundsight)
 
 Original code is available under the [MIT license](LICENSE). Dataset audio and the derived model retain their separate terms.
+
+## Comparison and uncertain matches
+
+Run `python -m soundsight.compare --data data/ESC-50 --out reports` after downloading the dataset. The runner compares a most-frequent dummy, linear SVM and RBF SVM on identical source-isolated folds and 218 features, producing `reports/COMPARISON.md` and raw JSON. This compares classifiers; it does not isolate individual feature contributions.
+
+The UI labels close rankings “Uncertain / Unknown” when the top-two score margin is below 0.2. This is an explicitly uncalibrated warning, not a probability or proven unknown detector. Strongly ranked unfamiliar sounds can still be wrong. See [independent evaluation protocol](reports/EXTERNAL_EVAL.md).
+
+Decoding accepts 8–192 kHz, one to eight channels, and at most 30 seconds, and reads only the first five seconds into the analysis buffer.
+
+Verified five-fold comparison: dummy **2.00%** accuracy / **0.0008** macro F1; linear SVM **46.20%** / **0.4497**; RBF SVM **57.55%** / **0.5626**. [Full comparison](reports/COMPARISON.md) · [Fold metrics](reports/comparison.json).
